@@ -1,0 +1,4 @@
+-- 
+--	Qui il tuo schema SQL.
+-- 	Per performance, conviene includere solo le tabelle e viste veramente utilizzate.
+--

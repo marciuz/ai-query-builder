@@ -1,0 +1,6 @@
+# File config
+config_llm_query.php
+logs/*
+!logs/.gitkeep
+.DS_Store
+**/.DS_Store

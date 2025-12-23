@@ -1,42 +1,52 @@
-# 🤖 LLM Query Builder per EbookECM
+# LLM Query Builder
 
-Interfaccia web per interrogare il database MySQL usando linguaggio naturale, powered by Qwen 3-coder 480b.
+Interfaccia web per interrogare database MySQL usando linguaggio naturale con AI.
 
-## 📋 Caratteristiche
+## Caratteristiche
 
-- ✅ Conversione linguaggio naturale → SQL automatica
-- ✅ Esecuzione sicura query READ-ONLY
-- ✅ Visualizzazione risultati in tabella
-- ✅ Export CSV/Excel (da implementare)
-- ✅ Cache delle risposte LLM
-- ✅ Log audit delle query
-- ✅ Validazione e sanitizzazione SQL
-- ✅ Timeout e limiti di sicurezza
+- Conversione linguaggio naturale → SQL automatica
+- Esecuzione sicura query READ-ONLY
+- Visualizzazione risultati in tabella
+- Cache delle risposte LLM
+- Log audit delle query
+- Validazione e sanitizzazione SQL
+- Timeout e limiti di sicurezza
 
-## 🚀 Installazione
+## Struttura Directory
 
-### 1. Copia i file nel tuo backoffice
-
-```bash
-# Struttura directory
-/backoffice/
-├── llm_query_interface.php    # Interfaccia principale
-├── api_llm_query.php          # API backend
-├── config_llm_query.php       # Configurazione
-├── generate_schema.php        # Helper per schema DB
-├── create_readonly_user.sql   # Script SQL per utente sicuro
-├── db_schema.sql              # Schema generato (da creare)
-├── logs/                      # Directory log (auto-creata)
-└── cache/                     # Directory cache (auto-creata)
 ```
+ai-query-builder/
+├── llm_query_interface.php      # Interfaccia principale
+├── api_llm_query.php            # API backend
+├── config_llm_query.php         # Configurazione
+├── config_llm_query-example.php # Esempio configurazione
+├── generate_schema.php          # Helper per schema DB
+├── test_installation.php        # Test installazione
+├── llm_query_builder.css        # Stili CSS
+├── maintenance.sh               # Script manutenzione
+├── docs/                        # Documentazione
+│   ├── INDEX.md
+│   ├── QUICK_START.md
+│   ├── ESEMPI_QUERY.md
+│   ├── LLM_PROVIDERS_CONFIG.md
+│   └── SECURITY_CHECKLIST.md
+├── sql/                         # Script SQL
+│   ├── create_readonly_user.sql
+│   └── db_schema.sql
+└── logs/                        # Log applicazione
+```
+
+## Installazione
+
+### 1. Copia i file
 
 ### 2. Crea utente database READ-ONLY
 
 ```bash
-mysql -u root -p < create_readonly_user.sql
+mysql -u root -p < sql/create_readonly_user.sql
 ```
 
-**⚠️ IMPORTANTE:** Cambia la password nel file SQL!
+**IMPORTANTE:** Modifica la password nel file SQL prima di eseguirlo.
 
 ### 3. Genera lo schema del database
 
@@ -51,37 +61,17 @@ mysqldump -u root -p --no-data yourdb > sql/db_schema.sql
 
 ### 4. Configura `config_llm_query.php`
 
-```php
-// Database
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'ebookecm');
-define('DB_USER', 'llm_readonly');
-define('DB_PASS', 'TUA_PASSWORD_SICURA');
+Copia `config_llm_query-example.php` in `config_llm_query.php` e modifica le impostazioni.
 
-// API LLM - Scegli il tuo provider
-// Opzione 1: OpenRouter
-define('LLM_API_ENDPOINT', 'https://openrouter.ai/api/v1/chat/completions');
-define('LLM_API_KEY', 'sk-or-v1-xxx');
-define('LLM_MODEL', 'qwen/qwen-3-coder');
+Consulta `docs/LLM_PROVIDERS_CONFIG.md` per la configurazione dei vari provider AI.
 
-// Opzione 2: Together AI
-define('LLM_API_ENDPOINT', 'https://api.together.xyz/v1/chat/completions');
-define('LLM_API_KEY', 'xxx');
-define('LLM_MODEL', 'Qwen/Qwen2.5-Coder-32B-Instruct');
+### 5. Testa l'installazione
 
-// Opzione 3: API Anthropic (se usi Claude)
-define('LLM_API_ENDPOINT', 'https://api.anthropic.com/v1/messages');
-define('LLM_API_KEY', 'sk-ant-xxx');
-define('LLM_MODEL', 'claude-sonnet-4-5-20250929');
+```bash
+php test_installation.php
 ```
 
-
-
-### 6. Testa l'installazione
-
-Accedi a: `https://www.ebookecm.it/backoffice/llm_query_interface.php`
-
-## 📖 Uso
+## Uso
 
 ### Esempi di richieste
 
@@ -105,17 +95,17 @@ Accedi a: `https://www.ebookecm.it/backoffice/llm_query_interface.php`
 2. **Solo Genera**: Genera solo la query senza eseguirla (per revisione)
 3. **Esegui**: Esegue una query già generata dopo revisione
 
-## 🔒 Sicurezza
+## Sicurezza
 
 ### Misure implementate
 
-✅ **Utente DB read-only**: Solo permessi SELECT
-✅ **Validazione SQL**: Blocca INSERT/UPDATE/DELETE/DROP
-✅ **Rate limiting**: Max query/ora configurabile
-✅ **Query timeout**: Previene query lunghe
-✅ **Sanitizzazione input**: Previene SQL injection
-✅ **Limite risultati**: Max 1000 righe
-✅ **Audit log**: Traccia tutte le query
+- **Utente DB read-only**: Solo permessi SELECT
+- **Validazione SQL**: Blocca INSERT/UPDATE/DELETE/DROP
+- **Rate limiting**: Max query/ora configurabile
+- **Query timeout**: Previene query lunghe
+- **Sanitizzazione input**: Previene SQL injection
+- **Limite risultati**: Max 1000 righe
+- **Audit log**: Traccia tutte le query
 
 ### Best Practices
 
@@ -126,7 +116,7 @@ Accedi a: `https://www.ebookecm.it/backoffice/llm_query_interface.php`
 5. **Backup regolari** del database
 6. **Testa le query** in staging prima
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Errore: "Schema database non disponibile"
 
@@ -164,7 +154,7 @@ chmod 755 cache/
 chmod 755 logs/
 ```
 
-## 📊 Monitoraggio
+## Monitoraggio
 
 ### Log delle query
 
@@ -184,7 +174,7 @@ SELECT * FROM information_schema.user_statistics
 WHERE USER = 'llm_readonly';
 ```
 
-## 🎨 Personalizzazione
+## Personalizzazione
 
 ### Cambia modello LLM
 
@@ -216,7 +206,7 @@ function exportToExcel() {
 
 Modifica gli stili CSS in `llm_query_interface.php` nella sezione `<style>`.
 
-## 🔄 Aggiornamenti
+## Aggiornamenti
 
 ### Aggiorna schema database
 
@@ -232,11 +222,11 @@ rm -rf cache/llm/*
 
 
 
-## 📄 Licenza
+## Licenza
 
-Uso interno EbookECM - Tutti i diritti riservati
+Uso interno - Tutti i diritti riservati
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 Questo sistema esegue query SQL generate da AI. Anche con tutte le misure di sicurezza:
 - Usa sempre in ambiente protetto
@@ -247,5 +237,4 @@ Questo sistema esegue query SQL generate da AI. Anche con tutte le misure di sic
 
 ---
 
-**Sviluppato per EbookECM Backoffice**
-Powered by Qwen 3-coder 480b & Claude Sonnet 4
+AI Query Builder - Natural Language to SQL Interface

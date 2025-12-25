@@ -81,15 +81,17 @@ function generateSQLQuery($naturalQuery) {
             'error' => 'Schema database non disponibile'
         ];
     }
+
+    $DB_TYPE = (defined('DB_TYPE')) ? DB_TYPE : 'MySQL 8';
     
     // Costruisci prompt per LLM
     $systemPrompt = <<<PROMPT
-You are an SQL expert who converts natural language requests into SQL queries for MySQL 8.
+You are an SQL expert who converts natural language requests into SQL queries for $DB_TYPE.
 You have access to the complete database schema below.
 
 IMPORTANT:
 - Generate ONLY SELECT queries (no INSERT, UPDATE, DELETE, DROP, etc.)
-- Use MySQL 8 syntax
+- Use $DB_TYPE syntax
 - Optimize queries with appropriate indexes
 - Use JOIN instead of subqueries when possible
 - Limit results to a maximum of 1000 rows with LIMIT

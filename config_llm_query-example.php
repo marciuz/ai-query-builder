@@ -55,6 +55,9 @@ define('LLM_CACHE_DIR', __DIR__ . '/cache/llm/');
 // File contenente il dump dello schema del DB
 define('DB_SCHEMA_FILE', __DIR__ . '/db_schema.sql');
 
+// Tipo di database (per prompt LLM)
+define('DB_TYPE', 'MySQL 8');
+
 
 // === FUNZIONI UTILITY ===
 
